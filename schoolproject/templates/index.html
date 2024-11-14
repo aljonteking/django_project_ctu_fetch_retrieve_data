@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>Course List</title>
+
+    <style>
+        /* Custom styles for the table */
+        table {
+            font-size: 0.8rem; /* Smaller font size for the table */
+        }
+        th, td {
+            padding: 0.5rem; /* Adjust padding */
+            text-align: center; /* Center align text */
+        }
+        .form-select {
+            height: 36px; /* Adjust height for dropdowns */
+            width: 200px; /* Set a specific width for dropdowns */
+            border-radius: 20px; /* Make dropdowns oval-shaped */
+        }
+        .search-btn {
+            border-radius: 20px; /* Make button oval-shaped */
+            padding: 0.5rem 1rem; /* Add padding for better appearance */
+        }
+        .header-box {
+            background-color: navy; /* Navy blue background */
+            color: white; /* White text color */
+            padding: 15px; /* Padding for the box */
+            border-radius: 5px; /* Rounded corners */
+            text-align: center; /* Center align text */
+            margin-bottom: 20px; /* Space below the header */
+        }
+    </style>
+</head>
+<body>
+    <div class="header-box">
+        <h1>Course List</h1>
+    </div>
+
+    <div class="container mt-4">
+        <!-- Form for Year, Course Selection and Search Button -->
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3 d-flex align-items-end position-relative">
+                <div>
+                    <label for="yearSelect" class="form-label"></label>
+                    <select id="yearSelect" name="year" class="form-select">
+                        <option value="" disabled selected>Choose Year</option>
+                        <option value="1" {% if request.POST.year == "1" %}selected{% endif %}>1st Year</option>
+                        <option value="2" {% if request.POST.year == "2" %}selected{% endif %}>2nd Year</option>
+                        <option value="3" {% if request.POST.year == "3" %}selected{% endif %}>3rd Year</option>
+                        <option value="4" {% if request.POST.year == "4" %}selected{% endif %}>4th Year</option>
+                    </select>
+                </div>
+                <div style="margin-left: 20px;">
+                    <label for="courseSelect" class="form-label"></label>
+                    <select id="courseSelect" name="course_type" class="form-select">
+                        <option value="" disabled selected>Choose Department</option>
+                        <option value="beed" {% if request.POST.course_type == "beed" %}selected{% endif %}>(COED) BEED</option>
+                        <option value="btled" {% if request.POST.course_type == "btled" %}selected{% endif %}>(COED) BTLED</option>
+                        <option value="civil" {% if request.POST.course_type == "civil" %}selected{% endif %}>(COENG) CIVIL</option>
+                        <option value="mechanical" {% if request.POST.course_type == "mechanical" %}selected{% endif %}>(COENG) MECHANICAL</option>
+                        <option value="electrical" {% if request.POST.course_type == "electrical" %}selected{% endif %}>(COENG) ELECTRICAL</option>
+                        <option value="comptech" {% if request.POST.course_type == "comptech" %}selected{% endif %}>(COT) COMPTECH</option>
+                        <option value="automotive" {% if request.POST.course_type == "automotive" %}selected{% endif %}>(COT) AUTOMOTIVE</option>
+                        <option value="comgent" {% if request.POST.course_type == "comgent" %}selected{% endif %}>(COMGENT) HM</option>
+                    </select>
+                </div>
+                <div>
+                    <button class="btn btn-primary search-btn" type="submit" style="position: absolute; left: 440px; top: 40%;">Search</button>
+                </div>
+            </div>
+        </form>
+        
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th style="background-color: navy; color: white;">Course ID</th>
+                    <th style="background-color: navy; color: white;">Instructor ID</th>
+                    <th style="background-color: navy; color: white;">Program ID</th>
+                    <th style="background-color: navy; color: white;">Course Code</th>
+                    <th style="background-color: navy; color: white;">Course Name</th>
+                    <th style="background-color: navy; color: white;">Department</th>
+                    <th style="background-color: navy; color: white;">Credit Hours</th>
+                    <th style="background-color: navy; color: white;">Prerequisites</th>
+                    <th style="background-color: navy; color: white;">School Year</th>
+                    <th style="background-color: navy; color: white;">Semester</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for course in courses %}
+                    <tr>
+                        <td>{{ course.course_id }}</td>
+                        <td>{{ course.instructor_id }}</td>
+                        <td>{{ course.program_id }}</td>
+                        <td>{{ course.course_code }}</td>
+                        <td>{{ course.course_name }}</td>
+                        <td>{{ course.department }}</td>
+                        <td>{{ course.credit_hours }}</td>
+                        <td>{{ course.prerequisites }}</td>
+                        <td>{{ course.school_year }}</td>
+                        <td>{{ course.semester }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="10" class="text-center">No courses available.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Optional JavaScript; choose one of the two! -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>
